@@ -44,6 +44,7 @@ void MainWindow::refreshAvailableBootDevices()
     ui->listWidget_availableBootDevices->clear();
     ui->listWidget_bootOrder_order->clear();
     ui->listWidget_bootOrder_availableBootDevices->clear();
+    ui->tabWidget->setCurrentIndex(0); //Set to first (default) page
     QProcess process;
     process.start("efibootmgr");
     process.waitForFinished(-1);
