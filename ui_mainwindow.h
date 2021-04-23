@@ -19,6 +19,7 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
@@ -51,11 +52,19 @@ public:
     QLabel *label_3;
     QLabel *label_nextBootDevice;
     QWidget *boot_order;
-    QPushButton *pushButton_saveBootOrder;
-    QPushButton *pushButton_bootOrder_moveSelectionUp;
-    QPushButton *pushButton_bootOrder_moveSelectionDown;
-    QListWidget *listWidget_bootOrder;
     QLabel *label_4;
+    QWidget *horizontalLayoutWidget;
+    QHBoxLayout *horizontalLayout_3;
+    QListWidget *listWidget_bootOrder_availableBootDevices;
+    QVBoxLayout *verticalLayout;
+    QSpacerItem *verticalSpacer_2;
+    QPushButton *pushButton_bootOrder_add;
+    QSpacerItem *horizontalSpacer;
+    QPushButton *pushButton_bootOrder_remove;
+    QSpacerItem *verticalSpacer;
+    QListWidget *listWidget_bootOrder_order;
+    QPushButton *pushButton_saveBootOrder;
+    QPushButton *pushButton_showCurrentBootOrder;
     QMenuBar *menubar;
     QMenu *menuFile;
     QMenu *menuHelp;
@@ -161,22 +170,61 @@ public:
         tabWidget->addTab(main, QString());
         boot_order = new QWidget();
         boot_order->setObjectName(QString::fromUtf8("boot_order"));
-        pushButton_saveBootOrder = new QPushButton(boot_order);
-        pushButton_saveBootOrder->setObjectName(QString::fromUtf8("pushButton_saveBootOrder"));
-        pushButton_saveBootOrder->setGeometry(QRect(490, 340, 91, 26));
-        pushButton_bootOrder_moveSelectionUp = new QPushButton(boot_order);
-        pushButton_bootOrder_moveSelectionUp->setObjectName(QString::fromUtf8("pushButton_bootOrder_moveSelectionUp"));
-        pushButton_bootOrder_moveSelectionUp->setGeometry(QRect(60, 330, 41, 41));
-        pushButton_bootOrder_moveSelectionDown = new QPushButton(boot_order);
-        pushButton_bootOrder_moveSelectionDown->setObjectName(QString::fromUtf8("pushButton_bootOrder_moveSelectionDown"));
-        pushButton_bootOrder_moveSelectionDown->setGeometry(QRect(10, 330, 41, 41));
-        listWidget_bootOrder = new QListWidget(boot_order);
-        listWidget_bootOrder->setObjectName(QString::fromUtf8("listWidget_bootOrder"));
-        listWidget_bootOrder->setGeometry(QRect(10, 30, 411, 291));
-        listWidget_bootOrder->setDragDropMode(QAbstractItemView::InternalMove);
         label_4 = new QLabel(boot_order);
         label_4->setObjectName(QString::fromUtf8("label_4"));
         label_4->setGeometry(QRect(10, 10, 421, 16));
+        horizontalLayoutWidget = new QWidget(boot_order);
+        horizontalLayoutWidget->setObjectName(QString::fromUtf8("horizontalLayoutWidget"));
+        horizontalLayoutWidget->setGeometry(QRect(10, 30, 571, 301));
+        horizontalLayout_3 = new QHBoxLayout(horizontalLayoutWidget);
+        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
+        horizontalLayout_3->setContentsMargins(0, 0, 0, 0);
+        listWidget_bootOrder_availableBootDevices = new QListWidget(horizontalLayoutWidget);
+        listWidget_bootOrder_availableBootDevices->setObjectName(QString::fromUtf8("listWidget_bootOrder_availableBootDevices"));
+        listWidget_bootOrder_availableBootDevices->setDragDropMode(QAbstractItemView::NoDragDrop);
+
+        horizontalLayout_3->addWidget(listWidget_bootOrder_availableBootDevices);
+
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer_2);
+
+        pushButton_bootOrder_add = new QPushButton(horizontalLayoutWidget);
+        pushButton_bootOrder_add->setObjectName(QString::fromUtf8("pushButton_bootOrder_add"));
+
+        verticalLayout->addWidget(pushButton_bootOrder_add);
+
+        horizontalSpacer = new QSpacerItem(40, 10, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        verticalLayout->addItem(horizontalSpacer);
+
+        pushButton_bootOrder_remove = new QPushButton(horizontalLayoutWidget);
+        pushButton_bootOrder_remove->setObjectName(QString::fromUtf8("pushButton_bootOrder_remove"));
+
+        verticalLayout->addWidget(pushButton_bootOrder_remove);
+
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer);
+
+
+        horizontalLayout_3->addLayout(verticalLayout);
+
+        listWidget_bootOrder_order = new QListWidget(horizontalLayoutWidget);
+        listWidget_bootOrder_order->setObjectName(QString::fromUtf8("listWidget_bootOrder_order"));
+        listWidget_bootOrder_order->setDragEnabled(false);
+        listWidget_bootOrder_order->setDragDropMode(QAbstractItemView::InternalMove);
+
+        horizontalLayout_3->addWidget(listWidget_bootOrder_order);
+
+        pushButton_saveBootOrder = new QPushButton(boot_order);
+        pushButton_saveBootOrder->setObjectName(QString::fromUtf8("pushButton_saveBootOrder"));
+        pushButton_saveBootOrder->setGeometry(QRect(458, 340, 121, 31));
+        pushButton_showCurrentBootOrder = new QPushButton(boot_order);
+        pushButton_showCurrentBootOrder->setObjectName(QString::fromUtf8("pushButton_showCurrentBootOrder"));
+        pushButton_showCurrentBootOrder->setGeometry(QRect(279, 340, 171, 31));
         tabWidget->addTab(boot_order, QString());
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
@@ -197,7 +245,7 @@ public:
         QObject::connect(actionExit, SIGNAL(triggered()), MainWindow, SLOT(close()));
         QObject::connect(pushButton_closeApplication, SIGNAL(clicked()), MainWindow, SLOT(close()));
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -223,11 +271,12 @@ public:
         label_3->setText(QCoreApplication::translate("MainWindow", "Next boot device:", nullptr));
         label_nextBootDevice->setText(QCoreApplication::translate("MainWindow", "Not set", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(main), QCoreApplication::translate("MainWindow", "Boot Devices", nullptr));
-        pushButton_saveBootOrder->setText(QCoreApplication::translate("MainWindow", "Save Order", nullptr));
-        pushButton_bootOrder_moveSelectionUp->setText(QString());
-        pushButton_bootOrder_moveSelectionDown->setText(QString());
         label_4->setText(QCoreApplication::translate("MainWindow", "Click and drag items to change the boot order/priority.", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(boot_order), QCoreApplication::translate("MainWindow", "Boot Order", nullptr));
+        pushButton_bootOrder_add->setText(QCoreApplication::translate("MainWindow", "Add ->", nullptr));
+        pushButton_bootOrder_remove->setText(QCoreApplication::translate("MainWindow", "<- Remove", nullptr));
+        pushButton_saveBootOrder->setText(QCoreApplication::translate("MainWindow", "Save Boot Order", nullptr));
+        pushButton_showCurrentBootOrder->setText(QCoreApplication::translate("MainWindow", "Show Current Boot Order", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(boot_order), QCoreApplication::translate("MainWindow", "Boot Order (Beta)", nullptr));
         menuFile->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));
         menuHelp->setTitle(QCoreApplication::translate("MainWindow", "Help", nullptr));
     } // retranslateUi

@@ -8,6 +8,7 @@
 QString confirm_reboot_fw = "You have requested to reboot the machine into its UEFI firmware settings. Are you sure you want to continue?";
 QString confirm_reboot_selected_boot_device = "You have requested to reboot the machine, and boot from the selected device. Are you sure you want to continue?";
 QString err_no_permissions_title = "Error: No Permissions";
+QStringList bootOrder;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -29,10 +30,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     //Button icons
     QCommonStyle style;
-    ui->pushButton_bootOrder_moveSelectionUp->setIcon(style.standardIcon(QStyle::SP_ArrowUp));
-    ui->pushButton_bootOrder_moveSelectionUp->setVisible(false);
-    ui->pushButton_bootOrder_moveSelectionDown->setIcon(style.standardIcon(QStyle::SP_ArrowDown));
-    ui->pushButton_bootOrder_moveSelectionDown->setVisible(false);
     ui->pushButton_refreshBootDevices->setIcon(style.standardIcon(QStyle::SP_BrowserReload));
 
     //connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(showAboutWindow()));
@@ -45,7 +42,8 @@ void MainWindow::refreshAvailableBootDevices()
     ui->label_nextBootDevice->setText("Not set");
     //Run the command, and get the returned data
     ui->listWidget_availableBootDevices->clear();
-    ui->listWidget_bootOrder->clear();
+    ui->listWidget_bootOrder_order->clear();
+    ui->listWidget_bootOrder_availableBootDevices->clear();
     QProcess process;
     process.start("efibootmgr");
     process.waitForFinished(-1);
@@ -54,7 +52,6 @@ void MainWindow::refreshAvailableBootDevices()
     QStringList lines = stdout.split('\n');
 
     QString qstr;
-    QStringList bootOrder;
     QStringList combo;
 
     for(int i = 0; i < lines.size(); i++)
@@ -66,6 +63,7 @@ void MainWindow::refreshAvailableBootDevices()
             QString bootDeviceId = currentLine.mid(4, 4);
             QString listEntryString = "(" + bootDeviceId + ") " + bootDeviceName;
             ui->listWidget_availableBootDevices->addItem(listEntryString);
+            ui->listWidget_bootOrder_availableBootDevices->addItem(listEntryString);
             combo.append(listEntryString);
         }
         if(currentLine.contains("BootCurrent"))
@@ -87,7 +85,7 @@ void MainWindow::refreshAvailableBootDevices()
     for(int i = 0; i < bootOrder.size(); i++)
     {
         QString id = bootOrder[i];
-        ui->listWidget_bootOrder->addItem(id);
+        //ui->listWidget_bootOrder->addItem(id);
     }
 }
 
@@ -112,7 +110,7 @@ void MainWindow::setNextBootDevice(QString id, bool reboot)
     {
         //Finally, refresh everything.
         refreshAvailableBootDevices();
-        QMessageBox::information(this, "Next Boot Device Set", "The system will now boot from the selected device on the next startup.", QMessageBox::Ok,QMessageBox::Ok);
+        QMessageBox::information(this, "Next Boot Device Set", "The system will now attempt to boot from the selected device on the next startup.", QMessageBox::Ok,QMessageBox::Ok);
     }
 }
 
@@ -125,6 +123,7 @@ void MainWindow::on_pushButton_rebootToFW_clicked()
     msgBox.setStandardButtons(QMessageBox::Yes);
     msgBox.addButton(QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::Yes);
+    msgBox.setIcon(QMessageBox::Icon::Question);
     if(msgBox.exec() == QMessageBox::Yes){
         //Reboot the system into UEFI firmware settings
         if (system("pkexec systemctl reboot --firmware-setup") != 0)
@@ -147,6 +146,7 @@ void MainWindow::on_pushButton_setSelectedAsNextBootDevice_clicked()
     msgBox.setStandardButtons(QMessageBox::Yes);
     msgBox.addButton(QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::Yes);
+    msgBox.setIcon(QMessageBox::Icon::Question);
     if(msgBox.exec() == QMessageBox::Yes)
     {
         if (ui->listWidget_availableBootDevices->selectedItems().length() != 0)
@@ -199,38 +199,76 @@ void MainWindow::on_pushButton_bootOrder_moveSelectionDown_clicked()
 
 void MainWindow::on_pushButton_saveBootOrder_clicked()
 {
-    QString commandPrefix = "pkexec efibootmgr --bootorder ";
-    QString bootOrder_commandArg;
-    for (int i = 0; i < ui->listWidget_bootOrder->count(); i++)
+    if(ui->listWidget_bootOrder_order->count()<1)
     {
-        bootOrder_commandArg.append(ui->listWidget_bootOrder->item(i)->text());
-        if(i != ui->listWidget_bootOrder->count() - 1)
+        QMessageBox::warning(this, "Not enough devices", "You need to have at least one device.", QMessageBox::Ok,QMessageBox::Ok);
+    }
+    else
+    {
+        QString commandPrefix = "pkexec efibootmgr --bootorder ";
+        QString bootOrder_commandArg;
+        for (int i = 0; i < ui->listWidget_bootOrder_order->count(); i++)
         {
-            bootOrder_commandArg.append(",");
+            bootOrder_commandArg.append(ui->listWidget_bootOrder_order->item(i)->text().mid(1,4));
+            if(i != ui->listWidget_bootOrder_order->count() - 1)
+            {
+                bootOrder_commandArg.append(",");
+            }
+        }
+
+        QString command = commandPrefix + bootOrder_commandArg;
+
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Save boot order");
+        msgBox.setText("Are you sure you want to save this boot order? \n" + bootOrder_commandArg + "\nWARNING: This feature is still in beta, and may cause problems. Proceed at your own risk.");
+        msgBox.setStandardButtons(QMessageBox::Yes);
+        msgBox.addButton(QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::Yes);
+        msgBox.setIcon(QMessageBox::Icon::Question);
+        if(msgBox.exec() == QMessageBox::Yes)
+        {
+            QByteArray ba = command.toLocal8Bit();
+            const char *c_str2 = ba.data();
+            //Now, execute the final command.
+            if (system(c_str2) != 0)
+            {
+                QMessageBox::warning(this, err_no_permissions_title, "Couldn't set the boot order: no permissions. Try running this application as root.", QMessageBox::Ok,QMessageBox::Ok);
+            }
+            else
+            {
+                QMessageBox::information(this, "Saved", "Boot order saved.", QMessageBox::Ok,QMessageBox::Ok);
+                refreshAvailableBootDevices();
+            }
         }
     }
+}
 
-    QString command = commandPrefix + bootOrder_commandArg;
-
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("Save boot order");
-    msgBox.setText("Are you sure you want to save this boot order? \n" + bootOrder_commandArg);
-    msgBox.setStandardButtons(QMessageBox::Yes);
-    msgBox.addButton(QMessageBox::No);
-    msgBox.setDefaultButton(QMessageBox::Yes);
-    if(msgBox.exec() == QMessageBox::Yes)
+void MainWindow::on_pushButton_bootOrder_add_clicked()
+{
+    if(ui->listWidget_bootOrder_availableBootDevices->selectedItems().count() > 0)
     {
-        QByteArray ba = command.toLocal8Bit();
-        const char *c_str2 = ba.data();
-        //Now, execute the final command.
-        if (system(c_str2) != 0)
-        {
-            QMessageBox::warning(this, err_no_permissions_title, "Couldn't set the boot order: no permissions. Try running this application as root.", QMessageBox::Ok,QMessageBox::Ok);
-        }
-        else
-        {
-            QMessageBox::information(this, "Saved", "Boot order saved.", QMessageBox::Ok,QMessageBox::Ok);
-            refreshAvailableBootDevices();
-        }
+        ui->listWidget_bootOrder_order->addItem(ui->listWidget_bootOrder_availableBootDevices->selectedItems()[0]->text());
+        qDeleteAll(ui->listWidget_bootOrder_availableBootDevices->selectedItems());
     }
+}
+
+void MainWindow::on_pushButton_bootOrder_remove_clicked()
+{
+    if(ui->listWidget_bootOrder_order->selectedItems().count() > 0)
+    {
+        ui->listWidget_bootOrder_availableBootDevices->addItem(ui->listWidget_bootOrder_order->selectedItems()[0]->text());
+        qDeleteAll(ui->listWidget_bootOrder_order->selectedItems());
+    }
+}
+
+void MainWindow::on_pushButton_showCurrentBootOrder_clicked()
+{
+    QString bootOrder_formatted;
+    bootOrder_formatted.append("Current boot order: \n");
+    for(int i = 0; i < bootOrder.count(); i++)
+    {
+        bootOrder_formatted.append(bootOrder[i]);
+        bootOrder_formatted.append("\n");
+    }
+    QMessageBox::information(this, "Current Boot Order", bootOrder_formatted, QMessageBox::Ok,QMessageBox::Ok);
 }

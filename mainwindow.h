@@ -33,6 +33,12 @@ private slots:
 
     void on_pushButton_saveBootOrder_clicked();
 
+    void on_pushButton_bootOrder_add_clicked();
+
+    void on_pushButton_bootOrder_remove_clicked();
+
+    void on_pushButton_showCurrentBootOrder_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
