@@ -48,9 +48,9 @@ void MainWindow::refreshAvailableBootDevices()
     QProcess process;
     process.start("efibootmgr");
     process.waitForFinished(-1);
-    QString stdout = process.readAllStandardOutput();
+    QString out = process.readAllStandardOutput();
     //Now parse the data line-by-line
-    QStringList lines = stdout.split('\n');
+    QStringList lines = out.split('\n');
 
     QString qstr;
     QStringList combo;
