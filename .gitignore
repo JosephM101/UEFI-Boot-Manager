@@ -1,3 +1,4 @@
 
 *.o
 Makefile
+uefi_boot_manager
