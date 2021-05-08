@@ -27,7 +27,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->menuHelp->setVisible(false); //Feature not working
     ui->actionAbout->setVisible(false); //Feature not working
     ui->actionAbout_2->setVisible(false); //Feature not working
-
     //Button icons
     QCommonStyle style;
     ui->pushButton_refreshBootDevices->setIcon(style.standardIcon(QStyle::SP_BrowserReload));
@@ -46,7 +45,8 @@ void MainWindow::refreshAvailableBootDevices()
     ui->listWidget_bootOrder_availableBootDevices->clear();
     ui->tabWidget->setCurrentIndex(0); //Set to first (default) page
     QProcess process;
-    process.start("efibootmgr");
+    process.setProgram("efibootmgr");
+    process.start();
     process.waitForFinished(-1);
     QString stdout = process.readAllStandardOutput();
     //Now parse the data line-by-line
@@ -119,7 +119,7 @@ void MainWindow::on_pushButton_rebootToFW_clicked()
 {
     //int ret = QMessageBox::question(this, tr("UEFI Boot Manager"), confirm_reboot_fw, QMessageBox::Yes | QMessageBox::No,QMessageBox::Yes);
     QMessageBox msgBox;
-    msgBox.setWindowTitle("UEFI Boot Manager");
+    msgBox.setWindowTitle("Reboot to UEFI Firmware");
     msgBox.setText(confirm_reboot_fw);
     msgBox.setStandardButtons(QMessageBox::Yes);
     msgBox.addButton(QMessageBox::No);

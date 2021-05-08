@@ -12,6 +12,7 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QListWidget>
@@ -33,17 +34,23 @@ public:
     QAction *actionAbout;
     QAction *actionAbout_2;
     QWidget *centralwidget;
-    QPushButton *pushButton_closeApplication;
+    QGridLayout *gridLayout_2;
+    QWidget *verticalWidget_2;
+    QVBoxLayout *verticalLayout_3;
     QTabWidget *tabWidget;
     QWidget *main;
-    QPushButton *pushButton_rebootToFW;
-    QPushButton *pushButton_refreshBootDevices;
-    QPushButton *pushButton_rebootFromSelectedDevice;
-    QListWidget *listWidget_availableBootDevices;
-    QPushButton *pushButton_setSelectedAsNextBootDevice;
+    QGridLayout *gridLayout;
+    QHBoxLayout *horizontalLayout_7;
+    QVBoxLayout *verticalLayout_7;
+    QVBoxLayout *verticalLayout_5;
+    QHBoxLayout *horizontalLayout_5;
+    QVBoxLayout *verticalLayout_6;
+    QSpacerItem *verticalSpacer_4;
     QLabel *label;
-    QPushButton *pushButton_clearNextBootDevice;
-    QWidget *verticalLayoutWidget;
+    QSpacerItem *horizontalSpacer_3;
+    QPushButton *pushButton_refreshBootDevices;
+    QListWidget *listWidget_availableBootDevices;
+    QHBoxLayout *horizontalLayout_6;
     QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout;
     QLabel *label_2;
@@ -51,6 +58,16 @@ public:
     QHBoxLayout *horizontalLayout_2;
     QLabel *label_3;
     QLabel *label_nextBootDevice;
+    QSpacerItem *horizontalSpacer_4;
+    QVBoxLayout *verticalLayout_8;
+    QSpacerItem *verticalSpacer_6;
+    QVBoxLayout *verticalLayout_4;
+    QPushButton *pushButton_clearNextBootDevice;
+    QPushButton *pushButton_rebootFromSelectedDevice;
+    QPushButton *pushButton_setSelectedAsNextBootDevice;
+    QSpacerItem *verticalSpacer_3;
+    QPushButton *pushButton_rebootToFW;
+    QSpacerItem *verticalSpacer_5;
     QWidget *boot_order;
     QLabel *label_4;
     QWidget *horizontalLayoutWidget;
@@ -65,6 +82,9 @@ public:
     QListWidget *listWidget_bootOrder_order;
     QPushButton *pushButton_saveBootOrder;
     QPushButton *pushButton_showCurrentBootOrder;
+    QHBoxLayout *horizontalLayout_4;
+    QSpacerItem *horizontalSpacer_2;
+    QPushButton *pushButton_closeApplication;
     QMenuBar *menubar;
     QMenu *menuFile;
     QMenu *menuHelp;
@@ -73,9 +93,10 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(610, 493);
-        MainWindow->setMinimumSize(QSize(610, 493));
-        MainWindow->setMaximumSize(QSize(610, 493));
+        MainWindow->setWindowModality(Qt::NonModal);
+        MainWindow->resize(610, 500);
+        MainWindow->setMinimumSize(QSize(610, 500));
+        MainWindow->setDockOptions(QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks);
         MainWindow->setUnifiedTitleAndToolBarOnMac(true);
         actionExit = new QAction(MainWindow);
         actionExit->setObjectName(QString::fromUtf8("actionExit"));
@@ -86,66 +107,86 @@ public:
         actionAbout_2->setObjectName(QString::fromUtf8("actionAbout_2"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        pushButton_closeApplication = new QPushButton(centralwidget);
-        pushButton_closeApplication->setObjectName(QString::fromUtf8("pushButton_closeApplication"));
-        pushButton_closeApplication->setGeometry(QRect(520, 430, 80, 26));
-        pushButton_closeApplication->setAutoDefault(false);
-        tabWidget = new QTabWidget(centralwidget);
+        QSizePolicy sizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(centralwidget->sizePolicy().hasHeightForWidth());
+        centralwidget->setSizePolicy(sizePolicy);
+        centralwidget->setContextMenuPolicy(Qt::PreventContextMenu);
+        centralwidget->setAutoFillBackground(true);
+        gridLayout_2 = new QGridLayout(centralwidget);
+        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        verticalWidget_2 = new QWidget(centralwidget);
+        verticalWidget_2->setObjectName(QString::fromUtf8("verticalWidget_2"));
+        verticalLayout_3 = new QVBoxLayout(verticalWidget_2);
+        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
+        tabWidget = new QTabWidget(verticalWidget_2);
         tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
-        tabWidget->setGeometry(QRect(8, 10, 591, 411));
         tabWidget->setTabShape(QTabWidget::Rounded);
         main = new QWidget();
         main->setObjectName(QString::fromUtf8("main"));
-        pushButton_rebootToFW = new QPushButton(main);
-        pushButton_rebootToFW->setObjectName(QString::fromUtf8("pushButton_rebootToFW"));
-        pushButton_rebootToFW->setGeometry(QRect(410, 290, 161, 31));
-        pushButton_rebootToFW->setAutoRepeat(false);
-        pushButton_rebootToFW->setAutoDefault(false);
-        pushButton_rebootToFW->setFlat(false);
+        gridLayout = new QGridLayout(main);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        horizontalLayout_7 = new QHBoxLayout();
+        horizontalLayout_7->setObjectName(QString::fromUtf8("horizontalLayout_7"));
+        verticalLayout_7 = new QVBoxLayout();
+        verticalLayout_7->setObjectName(QString::fromUtf8("verticalLayout_7"));
+        verticalLayout_7->setContentsMargins(-1, 5, -1, -1);
+        verticalLayout_5 = new QVBoxLayout();
+        verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
+        horizontalLayout_5 = new QHBoxLayout();
+        horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
+        verticalLayout_6 = new QVBoxLayout();
+        verticalLayout_6->setObjectName(QString::fromUtf8("verticalLayout_6"));
+        verticalSpacer_4 = new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Maximum);
+
+        verticalLayout_6->addItem(verticalSpacer_4);
+
+        label = new QLabel(main);
+        label->setObjectName(QString::fromUtf8("label"));
+
+        verticalLayout_6->addWidget(label);
+
+
+        horizontalLayout_5->addLayout(verticalLayout_6);
+
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_5->addItem(horizontalSpacer_3);
+
         pushButton_refreshBootDevices = new QPushButton(main);
         pushButton_refreshBootDevices->setObjectName(QString::fromUtf8("pushButton_refreshBootDevices"));
-        pushButton_refreshBootDevices->setGeometry(QRect(370, 5, 31, 31));
         pushButton_refreshBootDevices->setCheckable(false);
         pushButton_refreshBootDevices->setAutoDefault(false);
         pushButton_refreshBootDevices->setFlat(false);
-        pushButton_rebootFromSelectedDevice = new QPushButton(main);
-        pushButton_rebootFromSelectedDevice->setObjectName(QString::fromUtf8("pushButton_rebootFromSelectedDevice"));
-        pushButton_rebootFromSelectedDevice->setGeometry(QRect(410, 115, 161, 41));
-        pushButton_rebootFromSelectedDevice->setAutoRepeat(false);
-        pushButton_rebootFromSelectedDevice->setAutoDefault(false);
-        pushButton_rebootFromSelectedDevice->setFlat(false);
+
+        horizontalLayout_5->addWidget(pushButton_refreshBootDevices);
+
+
+        verticalLayout_5->addLayout(horizontalLayout_5);
+
         listWidget_availableBootDevices = new QListWidget(main);
         listWidget_availableBootDevices->setObjectName(QString::fromUtf8("listWidget_availableBootDevices"));
-        listWidget_availableBootDevices->setGeometry(QRect(10, 40, 391, 281));
-        pushButton_setSelectedAsNextBootDevice = new QPushButton(main);
-        pushButton_setSelectedAsNextBootDevice->setObjectName(QString::fromUtf8("pushButton_setSelectedAsNextBootDevice"));
-        pushButton_setSelectedAsNextBootDevice->setGeometry(QRect(410, 40, 161, 41));
-        pushButton_setSelectedAsNextBootDevice->setAutoRepeat(false);
-        pushButton_setSelectedAsNextBootDevice->setAutoDefault(false);
-        pushButton_setSelectedAsNextBootDevice->setFlat(false);
-        label = new QLabel(main);
-        label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(12, 20, 151, 18));
-        pushButton_clearNextBootDevice = new QPushButton(main);
-        pushButton_clearNextBootDevice->setObjectName(QString::fromUtf8("pushButton_clearNextBootDevice"));
-        pushButton_clearNextBootDevice->setGeometry(QRect(410, 85, 161, 26));
-        pushButton_clearNextBootDevice->setAutoDefault(false);
-        verticalLayoutWidget = new QWidget(main);
-        verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
-        verticalLayoutWidget->setGeometry(QRect(10, 325, 331, 46));
-        verticalLayout_2 = new QVBoxLayout(verticalLayoutWidget);
+
+        verticalLayout_5->addWidget(listWidget_availableBootDevices);
+
+        horizontalLayout_6 = new QHBoxLayout();
+        horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
+        verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setSpacing(4);
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
-        verticalLayout_2->setContentsMargins(2, 0, 0, 0);
+        verticalLayout_2->setContentsMargins(2, -1, -1, -1);
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        label_2 = new QLabel(verticalLayoutWidget);
+        label_2 = new QLabel(main);
         label_2->setObjectName(QString::fromUtf8("label_2"));
+        label_2->setMinimumSize(QSize(180, 0));
 
         horizontalLayout->addWidget(label_2);
 
-        label_currentBootDevice = new QLabel(verticalLayoutWidget);
+        label_currentBootDevice = new QLabel(main);
         label_currentBootDevice->setObjectName(QString::fromUtf8("label_currentBootDevice"));
+        label_currentBootDevice->setMinimumSize(QSize(100, 0));
 
         horizontalLayout->addWidget(label_currentBootDevice);
 
@@ -154,18 +195,91 @@ public:
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        label_3 = new QLabel(verticalLayoutWidget);
+        label_3 = new QLabel(main);
         label_3->setObjectName(QString::fromUtf8("label_3"));
+        label_3->setMinimumSize(QSize(180, 0));
 
         horizontalLayout_2->addWidget(label_3);
 
-        label_nextBootDevice = new QLabel(verticalLayoutWidget);
+        label_nextBootDevice = new QLabel(main);
         label_nextBootDevice->setObjectName(QString::fromUtf8("label_nextBootDevice"));
+        label_nextBootDevice->setMinimumSize(QSize(100, 0));
 
         horizontalLayout_2->addWidget(label_nextBootDevice);
 
 
         verticalLayout_2->addLayout(horizontalLayout_2);
+
+
+        horizontalLayout_6->addLayout(verticalLayout_2);
+
+        horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_6->addItem(horizontalSpacer_4);
+
+
+        verticalLayout_5->addLayout(horizontalLayout_6);
+
+
+        verticalLayout_7->addLayout(verticalLayout_5);
+
+
+        horizontalLayout_7->addLayout(verticalLayout_7);
+
+        verticalLayout_8 = new QVBoxLayout();
+        verticalLayout_8->setObjectName(QString::fromUtf8("verticalLayout_8"));
+        verticalSpacer_6 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        verticalLayout_8->addItem(verticalSpacer_6);
+
+        verticalLayout_4 = new QVBoxLayout();
+        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        pushButton_clearNextBootDevice = new QPushButton(main);
+        pushButton_clearNextBootDevice->setObjectName(QString::fromUtf8("pushButton_clearNextBootDevice"));
+        pushButton_clearNextBootDevice->setAutoDefault(false);
+
+        verticalLayout_4->addWidget(pushButton_clearNextBootDevice);
+
+        pushButton_rebootFromSelectedDevice = new QPushButton(main);
+        pushButton_rebootFromSelectedDevice->setObjectName(QString::fromUtf8("pushButton_rebootFromSelectedDevice"));
+        pushButton_rebootFromSelectedDevice->setAutoRepeat(false);
+        pushButton_rebootFromSelectedDevice->setAutoDefault(false);
+        pushButton_rebootFromSelectedDevice->setFlat(false);
+
+        verticalLayout_4->addWidget(pushButton_rebootFromSelectedDevice);
+
+        pushButton_setSelectedAsNextBootDevice = new QPushButton(main);
+        pushButton_setSelectedAsNextBootDevice->setObjectName(QString::fromUtf8("pushButton_setSelectedAsNextBootDevice"));
+        pushButton_setSelectedAsNextBootDevice->setAutoRepeat(false);
+        pushButton_setSelectedAsNextBootDevice->setAutoDefault(false);
+        pushButton_setSelectedAsNextBootDevice->setFlat(false);
+
+        verticalLayout_4->addWidget(pushButton_setSelectedAsNextBootDevice);
+
+        verticalSpacer_3 = new QSpacerItem(20, 80, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        verticalLayout_4->addItem(verticalSpacer_3);
+
+        pushButton_rebootToFW = new QPushButton(main);
+        pushButton_rebootToFW->setObjectName(QString::fromUtf8("pushButton_rebootToFW"));
+        pushButton_rebootToFW->setAutoRepeat(false);
+        pushButton_rebootToFW->setAutoDefault(false);
+        pushButton_rebootToFW->setFlat(false);
+
+        verticalLayout_4->addWidget(pushButton_rebootToFW);
+
+
+        verticalLayout_8->addLayout(verticalLayout_4);
+
+        verticalSpacer_5 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_8->addItem(verticalSpacer_5);
+
+
+        horizontalLayout_7->addLayout(verticalLayout_8);
+
+
+        gridLayout->addLayout(horizontalLayout_7, 0, 0, 1, 1);
 
         tabWidget->addTab(main, QString());
         boot_order = new QWidget();
@@ -226,6 +340,28 @@ public:
         pushButton_showCurrentBootOrder->setObjectName(QString::fromUtf8("pushButton_showCurrentBootOrder"));
         pushButton_showCurrentBootOrder->setGeometry(QRect(279, 340, 171, 31));
         tabWidget->addTab(boot_order, QString());
+
+        verticalLayout_3->addWidget(tabWidget);
+
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_4->addItem(horizontalSpacer_2);
+
+        pushButton_closeApplication = new QPushButton(verticalWidget_2);
+        pushButton_closeApplication->setObjectName(QString::fromUtf8("pushButton_closeApplication"));
+        pushButton_closeApplication->setMaximumSize(QSize(16777215, 25));
+        pushButton_closeApplication->setAutoDefault(false);
+
+        horizontalLayout_4->addWidget(pushButton_closeApplication);
+
+
+        verticalLayout_3->addLayout(horizontalLayout_4);
+
+
+        gridLayout_2->addWidget(verticalWidget_2, 0, 0, 1, 1);
+
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -245,7 +381,7 @@ public:
         QObject::connect(actionExit, SIGNAL(triggered()), MainWindow, SLOT(close()));
         QObject::connect(pushButton_closeApplication, SIGNAL(clicked()), MainWindow, SLOT(close()));
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -257,19 +393,18 @@ public:
         actionExit->setText(QCoreApplication::translate("MainWindow", "Exit", nullptr));
         actionAbout->setText(QCoreApplication::translate("MainWindow", "About", nullptr));
         actionAbout_2->setText(QCoreApplication::translate("MainWindow", "About", nullptr));
-        pushButton_closeApplication->setText(QCoreApplication::translate("MainWindow", "Close", nullptr));
-        pushButton_rebootToFW->setText(QCoreApplication::translate("MainWindow", "Reboot to Firmware", nullptr));
-        pushButton_refreshBootDevices->setText(QString());
-        pushButton_rebootFromSelectedDevice->setText(QCoreApplication::translate("MainWindow", "Reboot from Selected\n"
-"Device", nullptr));
-        pushButton_setSelectedAsNextBootDevice->setText(QCoreApplication::translate("MainWindow", "Set selected as next\n"
-"boot device", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "Available boot devices:", nullptr));
-        pushButton_clearNextBootDevice->setText(QCoreApplication::translate("MainWindow", "Clear Next Boot Device", nullptr));
+        pushButton_refreshBootDevices->setText(QString());
         label_2->setText(QCoreApplication::translate("MainWindow", "Current boot device:", nullptr));
         label_currentBootDevice->setText(QCoreApplication::translate("MainWindow", "Unknown", nullptr));
         label_3->setText(QCoreApplication::translate("MainWindow", "Next boot device:", nullptr));
         label_nextBootDevice->setText(QCoreApplication::translate("MainWindow", "Not set", nullptr));
+        pushButton_clearNextBootDevice->setText(QCoreApplication::translate("MainWindow", "Clear Next Boot Device", nullptr));
+        pushButton_rebootFromSelectedDevice->setText(QCoreApplication::translate("MainWindow", "Reboot from Selected\n"
+"Device", nullptr));
+        pushButton_setSelectedAsNextBootDevice->setText(QCoreApplication::translate("MainWindow", "Set selected as next\n"
+"boot device", nullptr));
+        pushButton_rebootToFW->setText(QCoreApplication::translate("MainWindow", "Reboot to Firmware", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(main), QCoreApplication::translate("MainWindow", "Boot Devices", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "Click and drag items to change the boot order/priority.", nullptr));
         pushButton_bootOrder_add->setText(QCoreApplication::translate("MainWindow", "Add ->", nullptr));
@@ -277,6 +412,7 @@ public:
         pushButton_saveBootOrder->setText(QCoreApplication::translate("MainWindow", "Save Boot Order", nullptr));
         pushButton_showCurrentBootOrder->setText(QCoreApplication::translate("MainWindow", "Show Current Boot Order", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(boot_order), QCoreApplication::translate("MainWindow", "Boot Order (Beta)", nullptr));
+        pushButton_closeApplication->setText(QCoreApplication::translate("MainWindow", "Close", nullptr));
         menuFile->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));
         menuHelp->setTitle(QCoreApplication::translate("MainWindow", "Help", nullptr));
     } // retranslateUi
