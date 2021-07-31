@@ -23,14 +23,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
     ui->pushButton_clearNextBootDevice->setVisible(false); //Feature not working
-    ui->pushButton_rebootFromSelectedDevice->setVisible(false); //Feature not working
+    //ui->pushButton_rebootFromSelectedDevice->setVisible(false); //Feature not working
     ui->menuHelp->setVisible(false); //Feature not working
     ui->actionAbout->setVisible(false); //Feature not working
     ui->actionAbout_2->setVisible(false); //Feature not working
     //Button icons
     QCommonStyle style;
     ui->pushButton_refreshBootDevices->setIcon(style.standardIcon(QStyle::SP_BrowserReload));
-
     //connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(showAboutWindow()));
     refreshAvailableBootDevices();
 }
@@ -93,25 +92,32 @@ void MainWindow::refreshAvailableBootDevices()
 void MainWindow::setNextBootDevice(QString id, bool reboot)
 {
     //Generate the command
-    QString commandPrefix = "pkexec efibootmgr --bootnext ";
-    QString command = commandPrefix + id; //Should look something like "pkexec efibootmgr --bootnext 0000"
-    if(reboot == true)
+    if(id != "null")
     {
-        command = command + " && pkexec reboot";
-    }
-    //Convert it to a const char for the 'system' command
-    QByteArray ba = command.toLocal8Bit();
-    const char *c_str2 = ba.data();
-    //Now, execute the final command.
-    if (system(c_str2) != 0)
-    {
-        QMessageBox::warning(this, err_no_permissions_title, "Couldn't set the boot device: no permissions. Try running this application as root.", QMessageBox::Ok,QMessageBox::Ok);
+        QString commandPrefix = "pkexec efibootmgr --bootnext ";
+        QString command = commandPrefix + id; //Should look something like "pkexec efibootmgr --bootnext 0000"
+        if(reboot == true)
+        {
+            command = command + " && pkexec reboot";
+        }
+        //Convert it to a const char for the 'system' command
+        QByteArray ba = command.toLocal8Bit();
+        const char *c_str2 = ba.data();
+        //Now, execute the final command.
+        if (system(c_str2) != 0)
+        {
+            QMessageBox::warning(this, err_no_permissions_title, "Couldn't set the boot device: no permissions. Try running this application as root.", QMessageBox::Ok,QMessageBox::Ok);
+        }
+        else
+        {
+            //Finally, refresh everything.
+            refreshAvailableBootDevices();
+            QMessageBox::information(this, "Next Boot Device Set", "The system will now attempt to boot from the selected device on the next startup.", QMessageBox::Ok,QMessageBox::Ok);
+        }
     }
     else
     {
-        //Finally, refresh everything.
-        refreshAvailableBootDevices();
-        QMessageBox::information(this, "Next Boot Device Set", "The system will now attempt to boot from the selected device on the next startup.", QMessageBox::Ok,QMessageBox::Ok);
+        QMessageBox::warning(this, "Error: Couldn't set the boot device", "Either no device was selected, or the selected device is invalid.", QMessageBox::Ok,QMessageBox::Ok);
     }
 }
 
@@ -134,9 +140,27 @@ void MainWindow::on_pushButton_rebootToFW_clicked()
     }
 }
 
+
+
 void MainWindow::on_pushButton_refreshBootDevices_clicked()
 {
     refreshAvailableBootDevices();
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+QString MainWindow::GetSelectedBootDeviceID()
+{
+    if (ui->listWidget_availableBootDevices->selectedItems().length() != 0)
+    {
+        QString selectionText = ui->listWidget_availableBootDevices->selectedItems()[0]->text();
+        QString bootDeviceID = selectionText.mid(1,4);
+        return bootDeviceID;
+    }
+    else return "null";
 }
 
 void MainWindow::on_pushButton_setSelectedAsNextBootDevice_clicked()
@@ -150,27 +174,22 @@ void MainWindow::on_pushButton_setSelectedAsNextBootDevice_clicked()
     msgBox.setIcon(QMessageBox::Icon::Question);
     if(msgBox.exec() == QMessageBox::Yes)
     {
-        if (ui->listWidget_availableBootDevices->selectedItems().length() != 0)
-        {
-            QString selectionText = ui->listWidget_availableBootDevices->selectedItems()[0]->text();
-            QString bootDeviceID = selectionText.mid(1,4);
-            setNextBootDevice(bootDeviceID, false);
-        }
+        setNextBootDevice(GetSelectedBootDeviceID(), false);
     }
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
 }
 
 void MainWindow::on_pushButton_rebootFromSelectedDevice_clicked()
 {
-    if (ui->listWidget_availableBootDevices->selectedItems().length() != 0)
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Reboot computer now?");
+    msgBox.setText("Reboot your computer from the selected device?");
+    msgBox.setStandardButtons(QMessageBox::Yes);
+    msgBox.addButton(QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    msgBox.setIcon(QMessageBox::Icon::Question);
+    if(msgBox.exec() == QMessageBox::Yes)
     {
-        QString selectionText = ui->listWidget_availableBootDevices->selectedItems()[0]->text();
-        QString bootDeviceID = selectionText.mid(1,4);
-        setNextBootDevice(bootDeviceID, true);
+        setNextBootDevice(GetSelectedBootDeviceID(), true);
     }
 }
 

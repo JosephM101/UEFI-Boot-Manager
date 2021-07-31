@@ -63,8 +63,8 @@ public:
     QSpacerItem *verticalSpacer_6;
     QVBoxLayout *verticalLayout_4;
     QPushButton *pushButton_clearNextBootDevice;
-    QPushButton *pushButton_rebootFromSelectedDevice;
     QPushButton *pushButton_setSelectedAsNextBootDevice;
+    QPushButton *pushButton_rebootFromSelectedDevice;
     QSpacerItem *verticalSpacer_3;
     QPushButton *pushButton_rebootToFW;
     QSpacerItem *verticalSpacer_5;
@@ -240,14 +240,6 @@ public:
 
         verticalLayout_4->addWidget(pushButton_clearNextBootDevice);
 
-        pushButton_rebootFromSelectedDevice = new QPushButton(main);
-        pushButton_rebootFromSelectedDevice->setObjectName(QString::fromUtf8("pushButton_rebootFromSelectedDevice"));
-        pushButton_rebootFromSelectedDevice->setAutoRepeat(false);
-        pushButton_rebootFromSelectedDevice->setAutoDefault(false);
-        pushButton_rebootFromSelectedDevice->setFlat(false);
-
-        verticalLayout_4->addWidget(pushButton_rebootFromSelectedDevice);
-
         pushButton_setSelectedAsNextBootDevice = new QPushButton(main);
         pushButton_setSelectedAsNextBootDevice->setObjectName(QString::fromUtf8("pushButton_setSelectedAsNextBootDevice"));
         pushButton_setSelectedAsNextBootDevice->setAutoRepeat(false);
@@ -255,6 +247,14 @@ public:
         pushButton_setSelectedAsNextBootDevice->setFlat(false);
 
         verticalLayout_4->addWidget(pushButton_setSelectedAsNextBootDevice);
+
+        pushButton_rebootFromSelectedDevice = new QPushButton(main);
+        pushButton_rebootFromSelectedDevice->setObjectName(QString::fromUtf8("pushButton_rebootFromSelectedDevice"));
+        pushButton_rebootFromSelectedDevice->setAutoRepeat(false);
+        pushButton_rebootFromSelectedDevice->setAutoDefault(false);
+        pushButton_rebootFromSelectedDevice->setFlat(false);
+
+        verticalLayout_4->addWidget(pushButton_rebootFromSelectedDevice);
 
         verticalSpacer_3 = new QSpacerItem(20, 80, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
@@ -381,7 +381,7 @@ public:
         QObject::connect(actionExit, SIGNAL(triggered()), MainWindow, SLOT(close()));
         QObject::connect(pushButton_closeApplication, SIGNAL(clicked()), MainWindow, SLOT(close()));
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -400,10 +400,10 @@ public:
         label_3->setText(QCoreApplication::translate("MainWindow", "Next boot device:", nullptr));
         label_nextBootDevice->setText(QCoreApplication::translate("MainWindow", "Not set", nullptr));
         pushButton_clearNextBootDevice->setText(QCoreApplication::translate("MainWindow", "Clear Next Boot Device", nullptr));
-        pushButton_rebootFromSelectedDevice->setText(QCoreApplication::translate("MainWindow", "Reboot from Selected\n"
-"Device", nullptr));
         pushButton_setSelectedAsNextBootDevice->setText(QCoreApplication::translate("MainWindow", "Set selected as next\n"
 "boot device", nullptr));
+        pushButton_rebootFromSelectedDevice->setText(QCoreApplication::translate("MainWindow", "Set selected as \n"
+"boot device, and restart", nullptr));
         pushButton_rebootToFW->setText(QCoreApplication::translate("MainWindow", "Reboot to Firmware", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(main), QCoreApplication::translate("MainWindow", "Boot Devices", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "Click and drag items to change the boot order/priority.", nullptr));

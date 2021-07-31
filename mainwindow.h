@@ -23,6 +23,8 @@ private slots:
     void on_pushButton_setSelectedAsNextBootDevice_clicked();
     //void showAboutWindow();
 
+    QString GetSelectedBootDeviceID();
+
     void on_pushButton_rebootFromSelectedDevice_clicked();
 
     void on_pushButton_clearNextBootDevice_clicked();

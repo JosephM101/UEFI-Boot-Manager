@@ -51,7 +51,7 @@
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="main">
           <attribute name="title">
@@ -252,10 +252,10 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButton_rebootFromSelectedDevice">
+                  <widget class="QPushButton" name="pushButton_setSelectedAsNextBootDevice">
                    <property name="text">
-                    <string>Reboot from Selected
-Device</string>
+                    <string>Set selected as next
+boot device</string>
                    </property>
                    <property name="autoRepeat">
                     <bool>false</bool>
@@ -269,10 +269,10 @@ Device</string>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButton_setSelectedAsNextBootDevice">
+                  <widget class="QPushButton" name="pushButton_rebootFromSelectedDevice">
                    <property name="text">
-                    <string>Set selected as next
-boot device</string>
+                    <string>Set selected as 
+boot device, and restart</string>
                    </property>
                    <property name="autoRepeat">
                     <bool>false</bool>
