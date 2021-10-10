@@ -221,7 +221,7 @@ void MainWindow::on_pushButton_saveBootOrder_clicked()
 {
     if(ui->listWidget_bootOrder_order->count()<1)
     {
-        QMessageBox::warning(this, "Not enough devices", "You need to have at least one device.", QMessageBox::Ok,QMessageBox::Ok);
+        QMessageBox::warning(this, "Not enough devices", "You need to select at least one device.", QMessageBox::Ok,QMessageBox::Ok);
     }
     else
     {
