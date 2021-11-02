@@ -9,7 +9,7 @@ Qt 5.15.2
 
 ## Building
 Prerequisites:
-- qmake
-- make
+- `qmake`
+- `make`
 
 In the repository directory, run `build.sh`. This will generate an executable binary file (`uefi_boot_manager`).
